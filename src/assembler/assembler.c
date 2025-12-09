@@ -3,12 +3,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "definitions.h"
+#include "../definitions.h"
 
 int main(int argc, const char* argv[]){
     if (argc != 3){
-        printf("Insufficient arguments. Use - ./assembler <file to read from>
-                                                          <file to output to>\n");
+        printf("Insufficient arguments. Use - ./assembler <file to read from> <file to output to>\n");
+        return 3; 
     }
 
     FILE* read_file = fopen(argv[1], "r");
