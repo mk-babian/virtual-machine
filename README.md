@@ -19,7 +19,7 @@ gcc -o assembler src/assembler/assembler.c
 
 ### 1. Write Assembly Code
 
-Create a file `program.asm`:
+Create a file (see `instructions` for an example) `program.asm`:
 
 ```asm
 PUSH 10
@@ -47,16 +47,18 @@ Output: `30`
 
 ```asm
 PUSH 5
+PRINT
 PUSH 1
 SUB
-PRINT
 PUSH 0
 EQ
 JZ 0
 HALT
 ```
 
-This prints numbers from 4 down to 0.
+This prints numbers from 5 down to 1, then halts when it reaches 0.
+
+**How it works**: Pushes a number, prints it, subtracts 1, checks if zero. If not zero, jumps back to byte 0 (the first PUSH instruction). When it hits zero, the JZ doesn't jump and execution continues to HALT.
 
 ## Instruction Reference
 
@@ -66,7 +68,7 @@ This prints numbers from 4 down to 0.
 | ADD         | No      | Pop two values, push their sum |
 | SUB         | No      | Pop b, pop a, push a-b |
 | MUL         | No      | Pop two values, push their product |
-| DIV         | No      | Pop b, pop a, push a/b |
+| DIV         | No      | Pop b, pop a, push a/b (errors on divide by zero) |
 | EQ          | No      | Pop two values, push 1 if equal, 0 otherwise |
 | JZ addr     | Yes     | Pop value, jump to byte addr if zero |
 | PRINT       | No      | Pop and print value |
@@ -74,8 +76,10 @@ This prints numbers from 4 down to 0.
 
 ## Known Issues
 
-- No label support for jumps—you calculate byte addresses manually
-- Stack overflow checking is minimal
+- **No label support**: You must calculate byte addresses manually for jumps. Each instruction is 1 byte, instructions with operands are 2 bytes.
+- **No error checking on fread**: The VM doesn't verify that the bytecode file was read successfully.
+- **Limited operand range**: Operands are uint8_t, so values are 0-255 only.
+- **No negative number support**: Stack values are int but PUSH only accepts 0-255.
 
 ## Contributing
 
