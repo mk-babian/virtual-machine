@@ -30,18 +30,28 @@ int main(int argc, const char* argv[]){
     }
     fseek(file, 0, SEEK_SET);
 
-    uint8_t* program = malloc(sizeof(uint8_t) * file_size);
+    // check if file is divisible by ints
+    if (file_size % sizeof(int) != 0){
+        exit_code = 8;
+        goto cleanup;
+    }
+
+    int* program = malloc(sizeof(int) * file_size);
     if (!program){
         exit_code = 3;
         goto cleanup;
     }
 
-    fread(program, sizeof(uint8_t), file_size, file);
-    // need to add error checking but i don't know how
+    size_t num_ints = file_size / sizeof(int);
+    size_t ints_read = fread(program, sizeof(int), num_ints, file);
+    if (ints_read != num_ints){
+        exit_code = 4;
+        goto cleanup;
+    }
 
     while (1){
         int a, b, val, address, condition;
-        uint8_t instruction = program[pc++];
+        int instruction = program[pc++];
 
         switch(instruction){
             case PUSH:
@@ -134,10 +144,13 @@ cleanup:
     if (exit_code == 1) fprintf(stderr, "failed to open file\n");
     if (exit_code == 2) fprintf(stderr, "fseek failed\n");
     if (exit_code == 3) fprintf(stderr, "malloc failed\n");
+    if (exit_code == 4) fprintf(stderr, "fread failed\n");
 
     if (exit_code == 5) fprintf(stderr, "stack overflow\n");;
     if (exit_code == 6) fprintf(stderr, "stack underflow\n");
+
     if (exit_code == 7) fprintf(stderr, "undefined division by zero\n");
+    if (exit_code == 8) fprintf(stderr, "file not divisible by int\n");
 
     if (program) free(program);
     if (file) fclose(file);
