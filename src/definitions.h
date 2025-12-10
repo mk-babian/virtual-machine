@@ -13,5 +13,6 @@
 #define DIV 7
 #define EQ 8
 #define JZ 9
+#define DUP 10
 
 #endif

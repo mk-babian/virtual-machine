@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 #include "definitions.h"
 
@@ -22,27 +23,25 @@ int main(int argc, const char* argv[]){
     int sp = 0;                 // stack pointer
     int pc = 0;                 // program counter
     
-    fseek(file, 0, SEEK_END);
-    long file_size = ftell(file);
-    if (file_size == -1L){
-        exit_code = 2;
+    struct stat file_stat;
+    if (stat(argv[1], &file_stat) == -1){
+        exit_code = 9;
         goto cleanup;
     }
-    fseek(file, 0, SEEK_SET);
 
     // check if file is divisible by ints
-    if (file_size % sizeof(int) != 0){
+    if (file_stat.st_size % sizeof(int) != 0){
         exit_code = 8;
         goto cleanup;
     }
 
-    int* program = malloc(sizeof(int) * file_size);
+    int* program = malloc(file_stat.st_size);
     if (!program){
         exit_code = 3;
         goto cleanup;
     }
 
-    size_t num_ints = file_size / sizeof(int);
+    size_t num_ints = file_stat.st_size / sizeof(int);
     size_t ints_read = fread(program, sizeof(int), num_ints, file);
     if (ints_read != num_ints){
         exit_code = 4;
@@ -129,6 +128,14 @@ int main(int argc, const char* argv[]){
                 }
                 printf("%d\n", stack[--sp]);
                 break;
+            case DUP:
+                if (sp < 1){
+                    exit_code = 6;
+                    goto cleanup;
+                }
+                stack[sp] = stack[sp - 1];
+                sp++;
+                break;
             case HALT:
                 free(program);
                 fclose(file);
@@ -151,6 +158,8 @@ cleanup:
 
     if (exit_code == 7) fprintf(stderr, "undefined division by zero\n");
     if (exit_code == 8) fprintf(stderr, "file not divisible by int\n");
+
+    if (exit_code == 9) fprintf(stderr, "stat failed\n");
 
     if (program) free(program);
     if (file) fclose(file);

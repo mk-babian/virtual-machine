@@ -85,6 +85,10 @@ int main(int argc, const char* argv[]){
             opcode = PRINT;
             has_operand = 0;
         }
+        else if (strcmp(instruction, "DUP") == 0){
+            opcode = DUP;
+            has_operand = 0;
+        }
         else if (strcmp(instruction, "HALT") == 0){
             opcode = HALT;
             has_operand = 0;
