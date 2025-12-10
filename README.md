@@ -77,8 +77,6 @@ This prints numbers from 5 down to 1, then halts when it reaches 0.
 ## Known Issues
 
 - **No label support**: You must calculate byte addresses manually for jumps. Each instruction is 1 byte, instructions with operands are 2 bytes.
-- **No error checking on fread**: The VM doesn't verify that the bytecode file was read successfully.
-- **Limited operand range**: Operands are uint8_t, so values are 0-255 only.
 - **No negative number support**: Stack values are int but PUSH only accepts 0-255.
 
 ## Contributing
