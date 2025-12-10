@@ -6,6 +6,8 @@
 #include "../definitions.h"
 
 int main(int argc, const char* argv[]){
+    int exit_code = 0;
+
     if (argc != 3){
         printf("Insufficient arguments. Use - ./assembler <file to read from> <file to output to>\n");
         return 3; 
@@ -14,24 +16,24 @@ int main(int argc, const char* argv[]){
     FILE* read_file = fopen(argv[1], "r");
     if (!read_file){
         fprintf(stderr, "Failed to open read file\n");
-        return 1;
+        exit_code = 1;
+        return exit_code;
     }
 
     FILE* write_file = fopen(argv[2], "wb");
     if (!write_file){
         fprintf(stderr, "Failed to open write file\n");
         fclose(read_file);
-        return 1;
+        exit_code = 1;
+        return exit_code;
     }
 
     // get read_file file size
     fseek(read_file, 0, SEEK_END);
     long file_size = ftell(read_file);
     if (file_size == -1L){
-        fprintf(stderr, "ftell failure\n");
-        fclose(write_file);
-        fclose(read_file);
-        return 2;
+        exit_code = 2;
+        goto cleanup;
     }
     fseek(read_file, 0, SEEK_SET);
 
@@ -41,12 +43,12 @@ int main(int argc, const char* argv[]){
     char* instruction;
     char* operand;
 
-    uint8_t opcode;
+    int opcode;
     int has_operand = 0;
 
     while (fgets(line, LINE_LENGTH, read_file) != NULL){
         instruction = strtok(line, delimiters);
-        if (!instruction) continue;             // skip empty lines
+        if (!instruction) continue;                      // skip empty lines
 
         operand = strtok(NULL, delimiters);
         has_operand = 0;
@@ -88,23 +90,29 @@ int main(int argc, const char* argv[]){
             has_operand = 0;
         }
         else{
-            fprintf(stderr, "unknown instruction: %s\n", instruction);
-            fclose(write_file);
-            fclose(read_file);
-            return 3;
+            exit_code = 3;
+            goto cleanup;
         }
 
         // write to binary file
-        fwrite(&opcode, sizeof(uint8_t), 1, write_file);
+        fwrite(&opcode, sizeof(int), 1, write_file);
 
         // handles writing operands
         if (has_operand && operand != NULL){
-            uint8_t op = atoi(operand);
-            fwrite(&op, sizeof(uint8_t), 1, write_file);
+            int op = atoi(operand);
+            fwrite(&op, sizeof(int), 1, write_file);
         }
     }
 
     fclose(write_file);
     fclose(read_file);
     return 0;
+
+cleanup:
+    if (exit_code == 2) fprintf(stderr, "ftell failed\n");
+    if (exit_code == 3) fprintf(stderr, "uknown operation in read_file\n");
+
+    if (write_file) fclose(write_file);
+    if (read_file) fclose(read_file);
+    return exit_code;
 }
