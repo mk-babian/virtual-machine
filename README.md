@@ -6,7 +6,7 @@ A minimal stack-based virtual machine with its own bytecode assembler. Write sim
 
 - **VM**: Executes bytecode using a stack-based architecture
 - **Assembler**: Converts human-readable instructions into bytecode
-- **Instruction Set**: PUSH, ADD, SUB, MUL, DIV, EQ, JZ, PRINT, HALT
+- **Instruction Set**: PUSH, ADD, SUB, MUL, DIV, EQ, JZ, PRINT, DUP, HALT
 
 ## Building
 
@@ -19,12 +19,20 @@ gcc -o assembler src/assembler/assembler.c
 
 ### 1. Write Assembly Code
 
-Create a file (see `instructions` for an example) `program.asm`:
+Create a file `program.asm`:
 
 ```asm
+PUSH 5
 PUSH 10
-PUSH 20
 ADD
+DUP
+PRINT
+PUSH 3
+DIV
+DUP
+PRINT
+PUSH 5000
+MUL
 PRINT
 HALT
 ```
@@ -41,24 +49,14 @@ HALT
 ./vm program.bin
 ```
 
-Output: `30`
-
-## Example: Countdown Loop
-
-```asm
-PUSH 5
-PRINT
-PUSH 1
-SUB
-PUSH 0
-EQ
-JZ 0
-HALT
+Output:
+```
+15
+5
+25000
 ```
 
-This prints numbers from 5 down to 1, then halts when it reaches 0.
-
-**How it works**: Pushes a number, prints it, subtracts 1, checks if zero. If not zero, jumps back to byte 0 (the first PUSH instruction). When it hits zero, the JZ doesn't jump and execution continues to HALT.
+**How it works**: Pushes 5 and 10, adds them (15), duplicates and prints (15). Divides by 3 (5), duplicates and prints (5). Multiplies by 5000 (25000), prints (25000), then halts.
 
 ## Instruction Reference
 
@@ -72,11 +70,12 @@ This prints numbers from 5 down to 1, then halts when it reaches 0.
 | EQ          | No      | Pop two values, push 1 if equal, 0 otherwise |
 | JZ addr     | Yes     | Pop value, jump to byte addr if zero |
 | PRINT       | No      | Pop and print value |
+| DUP         | No      | Duplicate top stack value |
 | HALT        | No      | Stop execution |
 
 ## Known Issues
 
-- **No label support**: You must calculate byte addresses manually for jumps. Each instruction is 1 byte, instructions with operands are 2 bytes.
+- **No label support**: You must calculate byte addresses manually for jumps. Each instruction is 1 byte, instructions with operands are 2 bytes in total.
 - **No negative number support**: Stack values are int but PUSH only accepts 0-255.
 
 ## Contributing
@@ -98,4 +97,4 @@ Before submitting:
 
 MIT License - See `LICENSE` file.
 
-Copyright (c) 2025 Saba
+Copyright (c) 2025 Saba 
