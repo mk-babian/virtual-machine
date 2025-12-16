@@ -1,11 +1,12 @@
 # Stack VM
 
-A minimal stack-based virtual machine with its own bytecode assembler. Write simple assembly-like programs, compile them to bytecode, and execute them.
+A minimal stack-based virtual machine with its own bytecode assembler and high-level compiler. Write programs in a simple expression-based language, compile to assembly, assemble to bytecode, and execute.
 
 ## What It Does
 
 - **VM**: Executes bytecode using a stack-based architecture
 - **Assembler**: Converts human-readable instructions into bytecode
+- **Compiler**: Translates high-level function calls into assembly
 - **Instruction Set**: PUSH, ADD, SUB, MUL, DIV, EQ, JZ, PRINT, DUP, HALT
 
 ## Building
@@ -13,11 +14,56 @@ A minimal stack-based virtual machine with its own bytecode assembler. Write sim
 ```bash
 gcc -o vm src/main.c
 gcc -o assembler src/assembler/assembler.c
+gcc -o compiler src/compiler/compiler.c
 ```
 
 ## Usage
 
-### 1. Write Assembly Code
+### Option 1: High-Level Language (Recommended)
+
+#### 1. Write High-Level Code
+
+Create a file `program.txt`:
+
+```
+add(5, 10)
+print()
+sub(20, 5)
+print()
+mul(3, 4)
+print()
+```
+
+#### 2. Compile to Assembly
+
+```bash
+./compiler program.txt
+```
+
+This generates `write_file` containing assembly instructions.
+
+#### 3. Assemble to Bytecode
+
+```bash
+./assembler write_file program.bin
+```
+
+#### 4. Run
+
+```bash
+./vm program.bin
+```
+
+Output:
+```
+15
+15
+12
+```
+
+### Option 2: Direct Assembly
+
+#### 1. Write Assembly Code
 
 Create a file `program.asm`:
 
@@ -37,13 +83,13 @@ PRINT
 HALT
 ```
 
-### 2. Assemble to Bytecode
+#### 2. Assemble to Bytecode
 
 ```bash
 ./assembler program.asm program.bin
 ```
 
-### 3. Run
+#### 3. Run
 
 ```bash
 ./vm program.bin
@@ -57,6 +103,30 @@ Output:
 ```
 
 **How it works**: Pushes 5 and 10, adds them (15), duplicates and prints (15). Divides by 3 (5), duplicates and prints (5). Multiplies by 5000 (25000), prints (25000), then halts.
+
+## Compiler Language Reference
+
+The compiler accepts function-style syntax:
+
+| Function | Arguments | Description |
+|----------|-----------|-------------|
+| add(a, b) | Two integers | Pushes a and b, adds them, leaves result on stack |
+| sub(a, b) | Two integers | Pushes a and b, subtracts b from a, leaves result on stack |
+| mul(a, b) | Two integers | Pushes a and b, multiplies them, leaves result on stack |
+| div(a, b) | Two integers | Pushes a and b, divides a by b, leaves result on stack (errors on divide by zero) |
+| print() | None | Pops and prints top stack value |
+| print(n) | One integer | Pushes n and immediately prints it (doesn't affect stack) |
+
+**Stack behavior**: Operations like `add(5, 10)` leave their result on the stack. Use `print()` to pop and display the result, or chain operations together. The compiler automatically inserts a `HALT` instruction at the end.
+
+**Example**:
+```
+add(100, 50)
+mul(2, 3)
+print()
+print()
+```
+Output: `6` then `150` (stack is LIFO)
 
 ## Instruction Reference
 
