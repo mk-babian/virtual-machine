@@ -1,2 +1,4 @@
 *.exe
 bytecode
+read_file
+write_file
