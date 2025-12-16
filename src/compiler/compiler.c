@@ -86,7 +86,7 @@ int main(int argc, const char* argv[]){
 cleanup:
     if (exit_code == 1) fprintf(stderr, "Failed to open file\n");
     if (exit_code == 2) fprintf(stderr, "Stack is empty | Error at line %zu\n", line_count);
-    if (exit_code == 2) fprintf(stderr, "Undefined division by zero | Error at line %zu\n", line_count);
+    if (exit_code == 3) fprintf(stderr, "Undefined division by zero | Error at line %zu\n", line_count);
 
     if (write_file) fclose(write_file);
     if (read_file) fclose(read_file);
