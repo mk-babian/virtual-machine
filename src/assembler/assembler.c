@@ -28,15 +28,6 @@ int main(int argc, const char* argv[]){
         return exit_code;
     }
 
-    // get read_file file size
-    fseek(read_file, 0, SEEK_END);
-    long file_size = ftell(read_file);
-    if (file_size == -1L){
-        exit_code = 2;
-        goto cleanup;
-    }
-    fseek(read_file, 0, SEEK_SET);
-
     char line[LINE_LENGTH];
     const char* delimiters = " \n\t\r";
 
