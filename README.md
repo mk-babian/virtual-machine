@@ -147,6 +147,7 @@ Output: `6` then `150` (stack is LIFO)
 
 - **No label support**: You must calculate byte addresses manually for jumps. Each instruction is 1 byte, instructions with operands are 2 bytes in total.
 - **No negative number support**: Stack values are int but PUSH only accepts 0-255.
+- **No bounds checking on address in JZ**: If the operand for JZ is out-of-range, it might lead to unexpected behavior, the VM will read/write out of bounds (undefined behavior / crash).
 
 ## Contributing
 
