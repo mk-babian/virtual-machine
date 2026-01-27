@@ -14,5 +14,7 @@
 #define EQ 8
 #define JZ 9
 #define DUP 10
+#define SWAP 11
+#define DROP 12
 
 #endif

@@ -7,7 +7,7 @@ A minimal stack-based virtual machine with its own bytecode assembler and high-l
 - **VM**: Executes bytecode using a stack-based architecture
 - **Assembler**: Converts human-readable instructions into bytecode
 - **Compiler**: Translates high-level function calls into assembly
-- **Instruction Set**: PUSH, ADD, SUB, MUL, DIV, EQ, JZ, PRINT, DUP, HALT
+- **Instruction Set**: PUSH, ADD, SUB, MUL, DIV, EQ, JZ, PRINT, DUP, SWAP, DROP, HALT
 
 ## Building
 
@@ -141,6 +141,8 @@ Output: `6` then `150` (stack is LIFO)
 | JZ addr     | Yes     | Pop value, jump to byte addr if zero |
 | PRINT       | No      | Pop and print value |
 | DUP         | No      | Duplicate top stack value |
+| SWAP        | No      | Exchange top two stack values |
+| DROP        | No      | Discard top stack value |
 | HALT        | No      | Stop execution |
 
 ## Known Issues

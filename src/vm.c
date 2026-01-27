@@ -136,6 +136,22 @@ int main(int argc, const char* argv[]){
                 stack[sp] = stack[sp - 1];
                 sp++;
                 break;
+            case SWAP:
+                if (sp < 2){
+                    exit_code = 10;
+                    goto cleanup;
+                }
+                int temp = stack[sp - 1];
+                stack[sp - 1] = stack[sp - 2];
+                stack[sp - 2] = temp;
+                break;
+            case DROP:
+                if (sp < 1){
+                    exit_code = 6;
+                    goto cleanup;
+                }
+                sp--;
+                break;
             case HALT:
                 free(program);
                 fclose(file);
@@ -160,6 +176,8 @@ cleanup:
     if (exit_code == 8) fprintf(stderr, "file not divisible by int\n");
 
     if (exit_code == 9) fprintf(stderr, "stat failed\n");
+
+    if (exit_code == 10) fprintf(stderr, "not enough items on stack for swap\n");
 
     if (program) free(program);
     if (file) fclose(file);

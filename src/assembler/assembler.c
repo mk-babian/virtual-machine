@@ -84,6 +84,14 @@ int main(int argc, const char* argv[]){
             opcode = HALT;
             has_operand = 0;
         }
+        else if (strcmp(instruction, "SWAP") == 0){
+            opcode = SWAP;
+            has_operand = 0;
+        }
+        else if (strcmp(instruction, "DROP") == 0){
+            opcode = DROP;
+            has_operand = 0;
+        }
         else{
             exit_code = 3;
             goto cleanup;
