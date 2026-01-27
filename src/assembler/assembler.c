@@ -92,6 +92,14 @@ int main(int argc, const char* argv[]){
             opcode = DROP;
             has_operand = 0;
         }
+        else if (strcmp(instruction, "OVER") == 0){
+            opcode = OVER;
+            has_operand = 0;
+        }
+        else if (strcmp(instruction, "JMP") == 0){
+            opcode = JMP;
+            has_operand = 1;
+        }
         else{
             exit_code = 3;
             goto cleanup;

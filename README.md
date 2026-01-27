@@ -7,7 +7,7 @@ A minimal stack-based virtual machine with its own bytecode assembler and high-l
 - **VM**: Executes bytecode using a stack-based architecture
 - **Assembler**: Converts human-readable instructions into bytecode
 - **Compiler**: Translates high-level function calls into assembly
-- **Instruction Set**: PUSH, ADD, SUB, MUL, DIV, EQ, JZ, PRINT, DUP, SWAP, DROP, HALT
+- **Instruction Set**: PUSH, ADD, SUB, MUL, DIV, EQ, JZ, JMP, PRINT, DUP, OVER, SWAP, DROP, HALT
 
 ## Building
 
@@ -139,8 +139,10 @@ Output: `6` then `150` (stack is LIFO)
 | DIV         | No      | Pop b, pop a, push a/b (errors on divide by zero) |
 | EQ          | No      | Pop two values, push 1 if equal, 0 otherwise |
 | JZ addr     | Yes     | Pop value, jump to byte addr if zero |
+| JMP addr    | Yes     | Unconditionally jump to byte addr |
 | PRINT       | No      | Pop and print value |
 | DUP         | No      | Duplicate top stack value |
+| OVER        | No      | Duplicate second stack value (copy value at depth 1 to top) |
 | SWAP        | No      | Exchange top two stack values |
 | DROP        | No      | Discard top stack value |
 | HALT        | No      | Stop execution |
@@ -148,7 +150,7 @@ Output: `6` then `150` (stack is LIFO)
 ## Known Issues
 
 - **No label support**: You must calculate byte addresses manually for jumps. Each instruction is 1 byte, instructions with operands are 2 bytes in total.
-- **No bounds checking on address in JZ**: If the operand for JZ is out-of-range, it might lead to unexpected behavior, the VM will read/write out of bounds (undefined behavior / crash).
+- **No bounds checking on address in JZ/JMP**: If the operand for JZ or JMP is out-of-range, it might lead to unexpected behavior, the VM will read/write out of bounds (undefined behavior / crash).
 
 ## Contributing
 
@@ -169,4 +171,4 @@ Before submitting:
 
 MIT License - See `LICENSE` file.
 
-Copyright (c) 2025 Saba 
+Copyright (c) 2025 Saba

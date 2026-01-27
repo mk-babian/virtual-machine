@@ -138,7 +138,7 @@ int main(int argc, const char* argv[]){
                 break;
             case SWAP:
                 if (sp < 2){
-                    exit_code = 10;
+                    exit_code = 6;
                     goto cleanup;
                 }
                 int temp = stack[sp - 1];
@@ -151,6 +151,18 @@ int main(int argc, const char* argv[]){
                     goto cleanup;
                 }
                 sp--;
+                break;
+            case OVER:
+                if (sp < 2){
+                    exit_code = 6;
+                    goto cleanup;
+                }
+                stack[sp] = stack[sp - 2];
+                sp++;
+                break;
+            case JMP:
+                address = program[pc++];
+                pc = address;
                 break;
             case HALT:
                 free(program);
@@ -176,8 +188,6 @@ cleanup:
     if (exit_code == 8) fprintf(stderr, "file not divisible by int\n");
 
     if (exit_code == 9) fprintf(stderr, "stat failed\n");
-
-    if (exit_code == 10) fprintf(stderr, "not enough items on stack for swap\n");
 
     if (program) free(program);
     if (file) fclose(file);

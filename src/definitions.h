@@ -16,5 +16,7 @@
 #define DUP 10
 #define SWAP 11
 #define DROP 12
+#define OVER 13
+#define JMP 14
 
 #endif
