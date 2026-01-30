@@ -100,6 +100,14 @@ int main(int argc, const char* argv[]){
             opcode = JMP;
             has_operand = 1;
         }
+        else if (strcmp(instruction, "STORE") == 0){
+            opcode = STORE;
+            has_operand = 1;
+        }
+        else if (strcmp(instruction, "LOAD") == 0){
+            opcode = LOAD;
+            has_operand = 1;
+        }
         else{
             exit_code = 3;
             goto cleanup;

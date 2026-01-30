@@ -2,6 +2,7 @@
 #define DEFINITIONS_H
 
 #define STACK_SIZE 2048
+#define MEMORY_SIZE 256
 #define LINE_LENGTH 256
 
 #define PUSH 1
@@ -18,5 +19,7 @@
 #define DROP 12
 #define OVER 13
 #define JMP 14
+#define STORE 15
+#define LOAD 16
 
 #endif

@@ -20,6 +20,7 @@ int main(int argc, const char* argv[]){
     }
 
     int stack[STACK_SIZE];      
+    int memory[MEMORY_SIZE];
     int sp = 0;                 // stack pointer
     int pc = 0;                 // program counter
     
@@ -164,6 +165,30 @@ int main(int argc, const char* argv[]){
                 address = program[pc++];
                 pc = address;
                 break;
+            case STORE:
+                if (sp < 1){
+                    exit_code = 6;
+                    goto cleanup;
+                }
+                address = program[pc++];
+                if (address < 0 || address >= MEMORY_SIZE){
+                    exit_code = 10;
+                    goto cleanup;
+                }
+                memory[address] = stack[--sp];
+                break;
+            case LOAD:
+                if (sp >= STACK_SIZE){
+                    exit_code = 5;
+                    goto cleanup;
+                }
+                address = program[pc++];
+                if (address < 0 || address >= MEMORY_SIZE){
+                    exit_code = 10;
+                    goto cleanup;
+                }
+                stack[sp++] = memory[address];
+                break;
             case HALT:
                 free(program);
                 fclose(file);
@@ -188,6 +213,8 @@ cleanup:
     if (exit_code == 8) fprintf(stderr, "file not divisible by int\n");
 
     if (exit_code == 9) fprintf(stderr, "stat failed\n");
+
+    if (exit_code == 10) fprintf(stderr, "address out of bounds\n");
 
     if (program) free(program);
     if (file) fclose(file);
