@@ -164,12 +164,12 @@ The VM provides 256 words of addressable memory (separate from the stack) access
 
 ```asm
 PUSH 67
-STORE 0      ; Store 67 at memory address 0
+STORE 0      ; store 67 at memory address 0
 PUSH 420
-STORE 1      ; Store 420 at memory address 1
-LOAD 0       ; Load value from address 0 (67)
-LOAD 1       ; Load value from address 1 (420)
-ADD          ; Add them (487)
+STORE 1      ; store 420 at memory address 1
+LOAD 0       ; load value from address 0 (67)
+LOAD 1       ; load value from address 1 (420)
+ADD          ; add them (487)
 PRINT
 HALT
 ```
