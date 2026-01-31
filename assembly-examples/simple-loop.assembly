@@ -1,0 +1,10 @@
+PUSH 0          ; hello, world
+DUP             ; this is a comment
+PRINT
+PUSH 1
+ADD             ; here is another one
+DUP
+PUSH 5
+EQ
+JZ 2
+HALT

@@ -1,0 +1,9 @@
+PUSH 67
+STORE 0             ; store at memory address 0
+PUSH 420
+DUP
+PRINT               ; stdout: 420
+LOAD 0              ; load value from memory address 0
+MUL                 ; 67 * 420
+PRINT
+HALT

@@ -1,0 +1,10 @@
+PUSH 2
+DUP
+PRINT
+PUSH 2
+MUL
+DUP
+PUSH 1073741824         ; 2 to the power of 30 (2^30)
+EQ
+JZ 2 
+HALT
