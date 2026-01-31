@@ -1,3 +1,5 @@
+*.bin
+*.html
 *.exe
 bytecode
 read_file
