@@ -60,10 +60,9 @@ Output:
 2
 3
 4
-
 ```
 
-### Option 2: High-Level Language **(Not Recommended Due To Being Outdated)** 
+### Option 2: High-Level Language **(Not Recommended Due To Being Outdated)**
 
 #### 1. Write High-Level Code
 
@@ -129,9 +128,10 @@ Output:
 | LOAD addr   | Yes     | Push value from memory address (0-255) onto stack           |
 | HALT        | No      | Stop execution                                              |
 
-## Definitions:
+## Definitions
 
 `definitions.h`
+
 ```
 #define STACK_SIZE 2048         // base stack size
 #define MEMORY_SIZE 256         // memory size for STORE and LOAD
