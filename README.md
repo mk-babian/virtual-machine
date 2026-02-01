@@ -129,6 +129,34 @@ Output:
 | LOAD addr   | Yes     | Push value from memory address (0-255) onto stack           |
 | HALT        | No      | Stop execution                                              |
 
+## Definitions:
+
+`definitions.h`
+```
+#define STACK_SIZE 2048         // base stack size
+#define MEMORY_SIZE 256         // memory size for STORE and LOAD
+#define LINE_LENGTH 256         // line length used in compiler.c
+
+// each instruction is treated as a number
+
+#define PUSH 1
+#define ADD 2
+#define PRINT 3
+#define HALT 4
+#define SUB 5
+#define MUL 6
+#define DIV 7
+#define EQ 8
+#define JZ 9
+#define DUP 10
+#define SWAP 11
+#define DROP 12
+#define OVER 13
+#define JMP 14
+#define STORE 15
+#define LOAD 16
+```
+
 ## Compiler Language Reference
 
 The compiler accepts function-style syntax:
